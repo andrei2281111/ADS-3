@@ -69,11 +69,7 @@ int counter(const int& a, const int& b , const char& el)
 {
     switch (el)
     {
-    default:
-    {
-        std::cout << "Whats wrong...";
-        exit(-1);
-    }
+        default:
         break;
     case '+':return a + b;
     case '-':return a - b;
@@ -95,7 +91,6 @@ int eval(std::string pst)
             k[0] = el;
             k[1] = '\0';
             int r = atoi(k);
-            std::cout << r << std::endl;
             stack.push(r);
         }
         else
