@@ -2,7 +2,7 @@
 #include <string>
 #include <utility>
 
-int nuum(const char& sim)
+int un_num(const char& sim)
 {
     std::pair<char, int> priority[6];
     priority[0].first = '('; priority[0].second = 0;
@@ -27,7 +27,7 @@ std::string infx2pstfx(std::string inf)
     TStack<char> stack;
     for (auto &sim : inf)
     {
-        int prior = nuum(sim);
+        int prior = un_num(sim);
         if (prior == -1)
             work += sim;
         else
@@ -36,7 +36,7 @@ std::string infx2pstfx(std::string inf)
             else if (sim == ')')
             {
                 char sm = stack.get();
-                while (nuum(sm) >= prior)
+                while (un_num(sm) >= prior)
                 {
                     work += sm;
                     stack.pop();
