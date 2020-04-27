@@ -4,68 +4,82 @@
 
 TStack<char>stack1;
 TStack<int>stack2;
+
 int prior(char a)
 {
-	int mas[] = { 0,1,2,2,3,3 };
+	int mas[] = { 0,1,2,2,3,3};
 	char str[] = "()+-*/";
-	int tmp = strchr(str, a) - str;
+	int tmp=strchr(str, a)-str;
 	return mas[tmp];
 }
 
 std::string infx2pstfx(std::string inf)
 {
-	int k = 0, k1 = 0;
-	std::string tmp;
+	int k = 0, k1 = 0,k2=0;
+	std:: string tmp;
 	for (int i = 0; i < inf.size(); i++)
 	{
 		if (!(inf[i] >= '0' && inf[i] <= '9'))
 		{
-
+			
 			if (stack1.isEmpty() == true)
 			{
 				stack1.push(inf[i]);
 				continue;
 			}
-
-			// Сначала - скобки
-
-			if (inf[i] == '(')
+			k = prior(inf[i]);
+			if (k == 0)
 			{
 				stack1.push(inf[i]);
 				continue;
 			}
-
-			if (inf[i] == ')')
+			k1 = prior(stack1.get());
+			if (k >k1)
+				stack1.push(inf[i]);
+			else 
 			{
-				while (stack1.get() != '(')
+				if (inf[i] == ')')
 				{
-					tmp += stack1.get();
+					char sym = stack1.get();
+					while (prior(sym)>=k)
+					{
+							tmp += sym;
+							stack1.pop();
+							sym= stack1.get();
+					}
 					stack1.pop();
 				}
-				stack1.pop();
-				continue;
-			}
+				else
+				{
+					while (stack1.isEmpty() == false)
+					{ 
+						if (!(stack1.get() == '(' || stack1.get() == ')'))
+						{
+							k2 = prior(stack1.get());
+							if (k2 >= k)
+							{
+								tmp += stack1.get();
+								stack1.pop();
+							}
+							else
+								stack1.pop();
+						}
+						else
+							break;
+					}
+					while (stack1.get() == '(' || stack1.get() == ')')
+						stack1.pop();
+					stack1.push(inf[i]);
+				}
 
-			// Остальные операции
-
-			k = prior(inf[i]);
-			k1 = prior(stack1.get());
-
-			if (k > k1)
-				stack1.push(inf[i]);
-			else
-			{
-				tmp += stack1.get();
-				stack1.pop();
-				stack1.push(inf[i]);
 			}
 		}
 		else
-			tmp += inf[i];
+			tmp+= inf[i];
 	}
 	while (stack1.isEmpty() == false)
 	{
-
+		
 		tmp += stack1.get();
 		stack1.pop();
 	}
@@ -77,13 +91,21 @@ int ex(int k1, int k2, char pst)
 	switch (pst)
 	{
 	case '+':
-		return k2 + k1;
+		return k1 + k2;
 	case '-':
-		return  k2 - k1;
+	{
+		if (k2 > k1)
+			return  k2 - k1;
+		else  return k1 - k2;
+	}
 	case '*':
-		return k2 * k1;
+	return k2* k1;
 	case '/':
-		return k2 / k1;
+	{
+		if (k2 > k1)
+			return k2 / k1;
+		else return k1 / k2;
+	}
 	}
 }
 int eval(std::string pst)
@@ -92,8 +114,8 @@ int eval(std::string pst)
 	int res;
 	for (int i = 0; i < pst.size(); i++)
 	{
-
-		if (pst[i] >= '0' && pst[i] <= '9')
+		
+		if(pst[i]>='0' && pst[i]<='9')
 			stack2.push(pst[i] - '0');
 		else
 		{
@@ -107,4 +129,3 @@ int eval(std::string pst)
 	}
 	return stack2.get();
 }
-
