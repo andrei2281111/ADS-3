@@ -3,8 +3,7 @@
 #include <utility>
 using namespace std;
 
-int un_num(const char& sim)
-{
+int un_num(const char& sim){
     std::pair<char, int> priority[6];
     priority[0].first = '('; priority[0].second = 0;
     priority[1].first = ')'; priority[1].second = 1;
@@ -14,16 +13,14 @@ int un_num(const char& sim)
     priority[5].first = '/'; priority[5].second = 3;
     int prior = -1;
     for (int j = 0; j < 6; ++j)
-        if (sim == priority[j].first)
-        {
+        if (sim == priority[j].first){
             prior = priority[j].second;
             break;
         }
     return prior;
 }
 
-std::string infx2pstfx(std::string inf)
-{
+std::string infx2pstfx(std::string inf){
     std::string work;
     TStack<char> stack;
     for (auto &sim : inf)
@@ -34,8 +31,7 @@ std::string infx2pstfx(std::string inf)
         else
             if (stack.get() < prior || prior == 0 || stack.isEmpty())
                 stack.push(sim);
-            else if (sim == ')')
-            {
+            else if (sim == ')'){
                 char sm = stack.get();
                 while (un_num(sm) >= prior)
                 {
@@ -45,8 +41,7 @@ std::string infx2pstfx(std::string inf)
                 }
                 stack.pop();
             }
-            else
-            {
+            else{
                 char sm = stack.get();
                 while (un_num(sm) >= prior)
                 {
@@ -57,15 +52,13 @@ std::string infx2pstfx(std::string inf)
                 stack.push(sim);
             }
     }
-    while (!stack.isEmpty())
-    {
+    while (!stack.isEmpty()){
         work += stack.get();
         stack.pop();
     }
     return work;
 }
-int counter(const int& a, const int& b , const char& el)
-{
+int counter(const int& a, const int& b , const char& el){
     switch (el)
     {
         default:
@@ -76,22 +69,18 @@ int counter(const int& a, const int& b , const char& el)
     case '/':return a / b;
     }
 } 
-int eval(std::string pst)
-{
+int eval(std::string pst){
     int summ{ 0 };
     TStack<int> stack;
-    for (auto& el : pst)
-    {
-        if (un_num(el) == -1)
-        {
+    for (auto& el : pst){
+        if (un_num(el) == -1){
             char k[2];
             k[0] = el;
             k[1] = '\0';
             int r = atoi(k);
             stack.push(r);
         }
-        else
-        {
+        else{
             int b = stack.get();
             stack.pop();
             int a = stack.get();
