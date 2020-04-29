@@ -23,8 +23,7 @@ int un_num(const char& sim){
 std::string infx2pstfx(std::string inf){
     std::string work;
     TStack<char> stack;
-    for (auto &sim : inf)
-    {
+    for (auto &sim : inf){
         int prior = un_num(sim);
         if (prior == -1)
             work += sim;
@@ -33,8 +32,7 @@ std::string infx2pstfx(std::string inf){
                 stack.push(sim);
             else if (sim == ')'){
                 char sm = stack.get();
-                while (un_num(sm) >= prior)
-                {
+                while (un_num(sm) >= prior){
                     work += sm;
                     stack.pop();
                     sm = stack.get();
@@ -43,8 +41,7 @@ std::string infx2pstfx(std::string inf){
             }
             else{
                 char sm = stack.get();
-                while (un_num(sm) >= prior)
-                {
+                while (un_num(sm) >= prior){
                     work += sm;
                     stack.pop();
                     sm = stack.get();
@@ -59,8 +56,7 @@ std::string infx2pstfx(std::string inf){
     return work;
 }
 int counter(const int& a, const int& b , const char& el){
-    switch (el)
-    {
+    switch (el){
         default:
         break;
     case '+':return a + b;
