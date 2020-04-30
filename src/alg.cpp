@@ -1,12 +1,12 @@
 #include "tstack.h"
+#include <stdio.h>
+#include <iostream>
 #include <string>
-#include<iostream>
-#include<stdio.h>
 #include <sstream>
 
 int pr(char s)
 {
-switch (s)
+    switch (s)
     {
     case '(': return 0;
     case ')': return 1;
@@ -20,55 +20,55 @@ switch (s)
 
 std::string infx2pstfx(std::string inf)
 {
-   std::string pstfx;
+    std::string pstfx;
     TStack<char> stack;
+    int j = 0;
     int k = 0;
- for(int j=0;j<inf.size();j++)
+    for (int i = 0; i < inf.size(); i++)
     {
-        int priority = pr(inf[j]);
+        int priority = pr(inf[i]);
         int counter = 0;
         if (priority == -1)
         {
-            pstfx += inf[j];
+            pstfx += inf[i];
         }
         else
-        if (pr(stack.get()) < priority || priority == 0 || stack.isEmpty()==true)
-        {
-            stack.push(inf[j]);
-        }
-        else
-        if (priority == 1)
-        {
-           char simv = stack.get();
-           stack.pop();
-            while (pr(simv)>priority)
+            if (pr(stack.get()) < priority || priority == 0 || stack.isEmpty() == true)
             {
-                pstfx += simv;
-                simv = stack.get();
-                stack.pop();
+                stack.push(inf[i]);
             }
-            if (stack.isEmpty() == false && stack.get()=='(')
+            else
+                if (priority == 1)
                 {
-                    simv = stack.get();
+                    char simv = stack.get();
                     stack.pop();
-                    pstfx += simv;
+                    while (pr(simv) > priority)
+                    {
+                        pstfx += simv;
+                        simv = stack.get();
+                        stack.pop();
+                    }
+                    if (stack.isEmpty() == false && stack.get() == '(')
+                    {
+                        simv = stack.get();
+                        stack.pop();
+                        pstfx += simv;
+                    }
                 }
-        }
-        else
-        {
-            char simv = stack.get();
-            while (pr(simv) > priority)
-            {
-                pstfx += simv;
-                stack.pop();
-                simv = stack.get();
-                stack.pop();
-            }
-            stack.push(inf[j]);
-        }
-
+                else
+                {
+                    char simv = stack.get();
+                    while (pr(simv) > priority)
+                    {
+                        pstfx += simv;
+                        stack.pop();
+                        simv = stack.get();
+                        stack.pop();
+                    }
+                    stack.push(inf[i]);
+                }
     }
-    while (stack.isEmpty()==false)
+    while (stack.isEmpty() == false)
     {
         char simv = stack.get();
         stack.pop();
@@ -77,13 +77,13 @@ std::string infx2pstfx(std::string inf)
     return pstfx;
 }
 
-int eval(std::string pst)
+int eval(std::string pstfx)
 {
-  int sum = 0;
+    int sum = 0;
     TStack<int> stack;
- for(int j=0;j<pstfx.size();j++)
+    for (int j = 0; j < pstfx.size(); j++)
     {
-        if (pr(pstfx[j])==-1)
+        if (pr(pstfx[j]) == -1)
         {
             std::string S;
             S += pstfx[j];
@@ -92,7 +92,7 @@ int eval(std::string pst)
             iss >> val;
             stack.push(val);
         }
-        else 
+        else
         {
             int a = stack.get();
             stack.pop();
@@ -105,7 +105,6 @@ int eval(std::string pst)
             stack.push(sum);
         }
         if (pstfx[j] == '\0') break;
-        j++;
     }
     return stack.get();
 }
