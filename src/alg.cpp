@@ -21,9 +21,8 @@ std::string infx2pstfx(std::string inf)
 {
    std::string pstfx;
     TStack<char> stack;
-    int j = 0;
     int k = 0;
-    while (inf[j] != '\0')
+ for(int j=0;j<inf.size();j++)
     {
         int priority = pr(inf[j]);
         int counter = 0;
@@ -67,7 +66,6 @@ std::string infx2pstfx(std::string inf)
             stack.push(inf[j]);
         }
 
-        j++;
     }
     while (stack.isEmpty()==false)
     {
@@ -82,8 +80,7 @@ int eval(std::string pst)
 {
   int sum = 0;
     TStack<int> stack;
-    int j = 0;
-    while (pstfx[j] != '\0')
+ for(int j=0;j<pstfx.size();j++)
     {
         if (pr(pstfx[j])==-1)
         {
