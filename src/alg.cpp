@@ -31,11 +31,13 @@ std::string infx2pstfx(std::string inf)
         if (priority == -1)
         {
             pstfx += inf[i];
+            k++;
         }
         else
             if (pr(stack.get()) < priority || priority == 0 || stack.isEmpty() == true)
             {
                 stack.push(inf[i]);
+                printf("stack:%c\n", inf[i]);
             }
             else
                 if (priority == 1)
@@ -45,14 +47,22 @@ std::string infx2pstfx(std::string inf)
                     while (pr(simv) > priority)
                     {
                         pstfx += simv;
+                        k++;
+                        printf("1simv:%c\n", simv);
                         simv = stack.get();
                         stack.pop();
                     }
-                    if (stack.isEmpty() == false && stack.get() == '(')
+                    if (stack.isEmpty() == false)
                     {
                         simv = stack.get();
-                        stack.pop();
-                        pstfx += simv;
+                        
+                        if (pr(simv) > pr(pstfx[k]))
+                        {
+                            printf("2simv:%c\n", simv);
+                            stack.pop();
+                            pstfx += simv;
+                        }
+                        k++;
                     }
                 }
                 else
@@ -61,6 +71,7 @@ std::string infx2pstfx(std::string inf)
                     while (pr(simv) > priority)
                     {
                         pstfx += simv;
+                        printf("3simv:%c\n", simv);
                         stack.pop();
                         simv = stack.get();
                         stack.pop();
@@ -71,6 +82,7 @@ std::string infx2pstfx(std::string inf)
     while (stack.isEmpty() == false)
     {
         char simv = stack.get();
+        printf("4simv:%c\n", simv);
         stack.pop();
         pstfx += simv;
     }
