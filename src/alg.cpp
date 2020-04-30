@@ -5,21 +5,16 @@
 
 int pr(char s)
 {
-    prior arr[6];
-    int prior=-1;
-    arr[0].operac = '('; arr[0].priority = 0;
-    arr[1].operac = ')'; arr[1].priority = 1;
-    arr[2].operac = '+'; arr[2].priority = 2;
-    arr[3].operac = '-'; arr[3].priority = 2;
-    arr[4].operac = '*'; arr[4].priority = 3;
-    arr[5].operac = '/'; arr[5].priority = 3;
-    for(int i=0;i<6;i++)
-        if (s == arr[i].operac)
-        {
-            prior = arr[i].priority;
-            break;
-        }
-    return prior;
+switch (s)
+    {
+    case '(': return 0;
+    case ')': return 1;
+    case '+': return 2;
+    case '-': return 2;
+    case '*': return 3;
+    case '/': return 3;
+    default: return -1;
+    }
 }
 
 std::string infx2pstfx(std::string inf)
