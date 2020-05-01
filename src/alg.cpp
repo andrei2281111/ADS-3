@@ -1,106 +1,103 @@
+#include <iostream>
 #include "tstack.h"
-#include <string>
-#include <utility>
+using namespace std;
 
-int un_num(const char& sim)
+int getPriority(char ch)
 {
-    std::pair<char, int> priority[6];
-    priority[0].first = '('; priority[0].second = 0;
-    priority[1].first = ')'; priority[1].second = 1;
-    priority[2].first = '+'; priority[2].second = 2;
-    priority[3].first = '-'; priority[3].second = 2;
-    priority[4].first = '*'; priority[4].second = 3;
-    priority[5].first = '/'; priority[5].second = 3;
-    int prior = -1;
-    for (int j = 0; j < 6; ++j)
-        if (sim == priority[j].first)
-        {
-            prior = priority[j].second;
-            break;
-        }
-    return prior;
-}
-std::string infx2pstfx(std::string inf)
-{
-    std::string work;
-    TStack<char> stack;
-    for (auto &sim : inf)
+    switch (ch)
     {
-        int prior = un_num(sim);
-        if (prior == -1)
-            work += sim;
+    case '(': return 0;
+    case ')': return 1;
+    case '+': return 2;
+    case '-': return 2;
+    case '*': return 3;
+    case '/': return 3;    
+    default: return -1;
+    }
+}
+
+string infx2pstfx(string inf)
+{
+    TStack<char> stack;
+    string out = "";
+    for (int i = 0; i < inf.size(); i++)
+    {
+        char ch = inf[i];
+        int priority = getPriority(ch);
+
+        if ( priority == -1)
+            out.append(string(1,ch));
         else
-            if (stack.get() < prior || prior == 0 || stack.isEmpty())
-                stack.push(sim);
-            else if (sim == ')')
-            {
-                char sm = stack.get();
-                while (un_num(sm) >= prior)
-                {
-                    work += sm;
-                    stack.pop();
-                    sm = stack.get();
-                }
-                stack.pop();
-            }
+            if( stack.isEmpty() || priority == 0 || priority > getPriority(stack.get()) )
+                stack.push(ch);
             else
             {
-                char sm = stack.get();
-                while (un_num(sm) >= prior)
+                if ( ch == ')')
+                    while(true)
+                    {
+                        char lastStackEl = stack.get();
+                        stack.pop();
+                        if (lastStackEl != '(')
+                            out.append(string(1,lastStackEl));
+                        else
+                            break;
+                    }
+                else
                 {
-                    work += sm;
-                    stack.pop();
-                    sm = stack.get();
+                    while(!stack.isEmpty())
+                    {
+                        char lastStackEl = stack.get();
+                        stack.pop();
+                        if (getPriority(lastStackEl) >= priority)
+                            out.append(string(1,lastStackEl));
+                    }
+                    stack.push(ch);
                 }
-                stack.push(sim);
             }
-
     }
-    while (!stack.isEmpty())
+    while(!stack.isEmpty())
     {
-        work += stack.get();
+        char lastStackEl = stack.get();
         stack.pop();
+        out.append(string(1,lastStackEl));
     }
-    return work;
+    return out;
 }
 
-int eval(std::string pst)
-int counter(const int& a, const int& b , const char& el)
+int calculate(int num1, int num2, char operation)
 {
-    switch (el)
+    switch (operation)
     {
-        default:
-        break;
-    case '+':return a + b;
-    case '-':return a - b;
-    case '*':return a * b;
-    case '/':return a / b;
+    case '+': return num1 + num2;
+    case '-': return num1 - num2;
+    case '*': return num1 * num2;
+    case '/': return num1 / num2;    
+    default: return -1;
     }
 }
 
-} 
-int eval(std::string pst)
+int eval(string pst)
 {
-    int summ{ 0 };
     TStack<int> stack;
-    for (auto& el : pst)
+    for (int i = 0; i < pst.size(); i++)
     {
-        if (un_num(el) == -1)
-        {
-            char k[2];
-            k[0] = el;
-            k[1] = '\0';
-            int r = atoi(k);
-            stack.push(r);
-        }
+        char ch = pst[i];
+        int priority = getPriority(ch);
+
+        if ( priority == -1)
+            stack.push(ch - 48);
         else
         {
-            int b = stack.get();
+            int  num1=stack.get(); 
             stack.pop();
-            int a = stack.get();
+
+            int num2 = stack.get();
             stack.pop();
-            stack.push(counter(a, b, el));
+
+            int result = calculate(num2, num1, ch);
+            stack.push(result);
         }
+
     }
     return stack.get();
 }
