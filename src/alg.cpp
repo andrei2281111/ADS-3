@@ -20,7 +20,7 @@ int un_num(const char& sim)
         }
     return prior;
 }
-// преобразование выражения в постфиксную форму
+
 std::string infx2pstfx(std::string inf)
 {
     std::string work;
@@ -65,7 +65,6 @@ std::string infx2pstfx(std::string inf)
     return work;
 }
 
-int eval(std::string pst)
 int counter(const int& a, const int& b , const char& el)
 {
     switch (el)
@@ -79,8 +78,7 @@ int counter(const int& a, const int& b , const char& el)
     }
 }
 
-} 
-// вычисление выражения, записанного в постфиксной форме
+
 int eval(std::string pst)
 {
     int summ{ 0 };
