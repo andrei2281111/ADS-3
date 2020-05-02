@@ -1,8 +1,7 @@
 #include "tstack.h"
 #include <string>
 #include <utility>
-
-using std::string
+using std::string;
 
 int un_num(const char& sim)
 {
@@ -23,21 +22,7 @@ int un_num(const char& sim)
     return prior;
 }
 
-int counter(const int& a, const int& b , const char& el)
-{
-    switch (el)
-    {
-        default:
-        break;
-    case '+':return a + b;
-    case '-':return a - b;
-    case '*':return a * b;
-    case '/':return a / b;
-    }
-}
-
-
-std::string infx2pstfx(std::string inf)
+string infx2pstfx(string inf)
 {
     string work;
     TStack<char> stack;
@@ -81,7 +66,20 @@ std::string infx2pstfx(std::string inf)
     return work;
 }
 
-int eval(std::string pst)
+int counter(const int& a, const int& b , const char& el)
+{
+    switch (el)
+    {
+        default:
+        break;
+    case '+':return a + b;
+    case '-':return a - b;
+    case '*':return a * b;
+    case '/':return a / b;
+    }
+}
+
+int eval(string pst)
 {
     int summ{ 0 };
     TStack<int> stack;
