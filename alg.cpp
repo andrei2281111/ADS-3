@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-string infx2pstfx(string inf)
+std::string infx2pstfx(std::string inf)
 int prior(char input)
 {
 	switch (input)
@@ -78,6 +78,7 @@ int excute_calc(int k1, int k2, char pst)
 	}
 }
 
+int eval(std::string pst)
 int eval(string pst)
 {
 	TStack<int> stack2;
@@ -95,7 +96,6 @@ int eval(string pst)
 
 			int k2 = stack2.get();
 			stack2.pop();
-
 } 
 			int res = excute_calc(k2, k1, ch);
 			stack2.push(res);
