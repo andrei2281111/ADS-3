@@ -1,7 +1,10 @@
+#include <iostream>
+#include "tstack.h"
+
 using namespace std;
 
-// преобразование выражение в постфиксную форму
-int priority (char input)
+
+int prior(char input)
 {
 switch (input)
 {
@@ -14,8 +17,7 @@ case '/': return 3;
 default: return -1;
 }
 }
-
-
+//преобрахование
 string infx2pstfx(string inf)
 {
 TStack<char> stack1;
@@ -23,12 +25,12 @@ string tmp = "";
 for (int i = 0; i < inf.size(); i++)
 {
 char ch = inf[i];
-int k = priority(ch);
+int k = prior(ch);
 
 if (k == -1)
 tmp.append(string(1, ch));
 else
-if (stack1.isEmpty() || k == 0 || k > priority(stack1.get()))
+if (stack1.isEmpty() || k == 0 || k > prior(stack1.get()))
 stack1.push(ch);
 else
 {
@@ -48,7 +50,7 @@ while (!stack1.isEmpty())
 {
 char lastStackEl = stack1.get();
 stack1.pop();
-if (priority(lastStackEl) >= k)
+if (prior(lastStackEl) >= k)
 tmp.append(string(1, lastStackEl));
 }
 stack1.push(ch);
@@ -64,7 +66,6 @@ tmp.append(string(1, lastStackEl));
 return tmp;
 }
 
-
 int excute_calc(int k1, int k2, char pst)
 {
 switch (pst)
@@ -76,18 +77,17 @@ case '/': return k1 / k2;
 default: return -1;
 }
 }
-
-// вычисление выражения, записанного в постфиксной форме
-
+//высчитывание
+int eval(std::string pst)
 int eval(string pst)
 {
 TStack<int> stack2;
 for (int i = 0; i < pst.size(); i++)
 {
 char ch = pst[i];
-int pr = priority(ch);
+int priority = prior(ch);
 
-if (pr == -1)
+if (priority == -1)
 stack2.push(ch - 48);
 else
 {
@@ -104,7 +104,4 @@ stack2.push(res);
 
 }
 return stack2.get();
-}
-  
-  
 }
