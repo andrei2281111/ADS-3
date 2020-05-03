@@ -76,8 +76,6 @@ int calculate(int num1, int num2, char operation)
     }
 }
 
-}
-
 int eval(std::string pst)
 {
 TStack<int> stack;
