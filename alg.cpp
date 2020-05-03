@@ -1,9 +1,7 @@
 #include <iostream>
 #include "tstack.h"
-#include <string>
 using namespace std;
 
-std::string infx2pstfx(std::string inf)
 int prior(char input)
 {
 	switch (input)
@@ -78,7 +76,6 @@ int excute_calc(int k1, int k2, char pst)
 	}
 }
 
-int eval(std::string pst)
 int eval(string pst)
 {
 	TStack<int> stack2;
@@ -100,7 +97,6 @@ int eval(string pst)
 			int res = excute_calc(k2, k1, ch);
 			stack2.push(res);
 		}
-
 	}
 	return stack2.get();
 }
