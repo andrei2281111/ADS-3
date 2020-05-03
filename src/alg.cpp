@@ -3,13 +3,6 @@
 #include <string>
 using namespace std;
 
-
-int prior(char);
-std::string infx2pstfx(std::string);
-int calc(int, int, char);
-int eval(std::string);
-
-
 int prior(char sign)
 {
 	switch (sign)
@@ -27,7 +20,6 @@ int prior(char sign)
 std::string infx2pstfx(std::string inf)
 {
 	int k;
-	int k0;
 	TStack<char> stack1;
 	std::string expr = "";
 	for (int i = 0; i < inf.size(); i++)
@@ -35,10 +27,9 @@ std::string infx2pstfx(std::string inf)
 		k = prior(inf[i]);
 		if (k > -1)
 		{
-			k0 = k;
-			if (k == 0 || k > k0 || stack1.isEmpty())
+			if (k == 0 || k > prior(stack1.get()) || stack1.isEmpty())
 				stack1.push(inf[i]);
-			else if (k = 1)
+			else if (k == 1)
 			{
 				while (stack1.get() != '(')
 				{
@@ -80,7 +71,6 @@ int eval(std::string pst)
 	TStack<int> stack2;
 	for (int i = 0; i < pst.size(); i++)
 	{
-		//char ch = pst[i];
 		int priority = prior(pst[i]);
 
 		if (priority > -1)
