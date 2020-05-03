@@ -32,10 +32,15 @@ std::string infx2pstfx(std::string inf)
 				stack1.push(inf[i]);
 			else if (k == 1)
 			{
-				while (stack1.get() != '(')
+				while (1)
 				{
-					expr.append(string(1, stack1.get()));
-					stack1.pop();
+					if (stack1.get() != '(')
+					{
+						expr.append(string(1, stack1.get()));
+						stack1.pop();
+					}
+					else
+						break;
 				}
 				stack1.pop();
 			}
