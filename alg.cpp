@@ -78,30 +78,3 @@ int excute_calc(int k1, int k2, char pst)
 	}
 }
 
-int eval(std::string pst)
-int eval(string pst)
-{
-	TStack<int> stack2;
-	for (int i = 0; i < pst.size(); i++)
-	{
-		char ch = pst[i];
-		int priority = prior(ch);
-
-		if (priority == -1)
-			stack2.push(ch - 48);
-		else
-		{
-			int  k1 = stack2.get();
-			stack2.pop();
-
-			int k2 = stack2.get();
-			stack2.pop();
-
-} 
-			int res = excute_calc(k2, k1, ch);
-			stack2.push(res);
-		}
-
-	}
-	return stack2.get();
-}
