@@ -78,7 +78,7 @@ default: return -1;
 }
 }
 //высчитывание
-int eval(std::string pst)
+
 int eval(string pst)
 {
 TStack<int> stack2;
