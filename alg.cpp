@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-std::string infx2pstfx(std::string inf)
+string infx2pstfx(std::string inf)
 int prior(char input)
 {
 	switch (input)
