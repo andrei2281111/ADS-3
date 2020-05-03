@@ -29,7 +29,7 @@ std::string infx2pstfx(std::string inf)
 		{
 			if (k == 0 || k > prior(stack1.get()) || stack1.isEmpty())
 				stack1.push(inf[i]);
-			else if (k = 1)
+			else if (k == 1)
 			{
 				while (stack1.get() != '(')
 				{
@@ -54,10 +54,8 @@ std::string infx2pstfx(std::string inf)
 		expr.append(string(1, stack1.get()));
 		stack1.pop();
 	}
-
 	return expr;
 }
-
 
 int calc(int k1, int k2, char pst)
 {
