@@ -99,4 +99,3 @@ int eval(string pst)
 		}
 		return stack2.get();
 	}
-}
