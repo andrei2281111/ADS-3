@@ -41,11 +41,8 @@ std::string infx2pstfx(std::string inf)
 			}
 			else if (k <= prior(stack1.get()))
 			{
-				while (stack1.isEmpty() == false || stack1.get() != '(')
-				{
-					expr.append(string(1, stack1.get()));
-					stack1.pop();
-				}
+				expr.append(string(1, stack1.get()));
+				stack1.pop();
 				stack1.push(inf[i]);
 			}
 		}
@@ -61,6 +58,7 @@ std::string infx2pstfx(std::string inf)
 	return expr;
 }
 
+
 int calc(int k1, int k2, char pst)
 {
 	switch (pst)
@@ -73,29 +71,31 @@ int calc(int k1, int k2, char pst)
 	}
 }
 
-int eval(std::string pst)
+
+int eval(string pst)
 {
-	int oper1;
-	int oper2;
+
 	TStack<int> stack2;
 	for (int i = 0; i < pst.size(); i++)
 	{
-		int priority = prior(pst[i]);
+		char sym = pst[i];
+		int priority = prior(sym);
 
-		if (priority > -1)
-		{
-			oper1 = stack2.get();
-			stack2.pop();
-
-			oper2 = stack2.get();
-			stack2.pop();
-		}
-
+		if (priority == -1)
+			stack2.push(sym - 48);
 		else
-			stack2.push(pst[i] - 48);
+		{
+			int oper1 = stack2.get();
+			stack2.pop();
 
+			int oper2 = stack2.get();
+			stack2.pop();
+
+		}
 		int res = calc(oper2, oper1, pst[i]);
 		stack2.push(res);
 	}
-	return stack2.get();
+
+}
+return stack2.get();
 }
