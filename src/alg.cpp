@@ -74,7 +74,8 @@ int calc(int k1, int k2, char pst)
 
 int eval(std::string pst)
 {
-
+        int oper1;
+	int oper2;
 	TStack<int> stack2;
 	for (int i = 0; i < pst.size(); i++)
 	{
@@ -84,10 +85,10 @@ int eval(std::string pst)
 			stack2.push(pst[i] - 48);
 		else
 		{
-			int oper1 = stack2.get();
+			oper1 = stack2.get();
 			stack2.pop();
 
-			int oper2 = stack2.get();
+			oper2 = stack2.get();
 			stack2.pop();
 
 		}
