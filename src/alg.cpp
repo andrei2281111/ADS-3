@@ -32,7 +32,7 @@ std::string infx2pstfx(std::string inf)
 				stack1.push(inf[i]);
 			else if (k == 1)
 			{
-				while (true)
+				while (1)
 				{
 					if (stack1.get() != '(')
 					{
@@ -46,8 +46,12 @@ std::string infx2pstfx(std::string inf)
 			}
 			else if (k <= prior(stack1.get()))
 			{
-				expr.append(string(1, stack1.get()));
-				stack1.pop();
+				while (stack1.isEmpty() == false || stack1.get() != '(')
+				{
+					expr.append(string(1, stack1.get()));
+					stack1.pop();
+				}
+				stack1.push(inf[i]);
 			}
 		}
 		else
