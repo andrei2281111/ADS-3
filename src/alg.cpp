@@ -72,17 +72,16 @@ int calc(int k1, int k2, char pst)
 }
 
 
-int eval(string pst)
+int eval(std::string pst)
 {
 
 	TStack<int> stack2;
 	for (int i = 0; i < pst.size(); i++)
 	{
-		char sym = pst[i];
-		int priority = prior(sym);
+		int priority = prior(pst[i]);
 
 		if (priority == -1)
-			stack2.push(sym - 48);
+			stack2.push(pst[i] - 48);
 		else
 		{
 			int oper1 = stack2.get();
