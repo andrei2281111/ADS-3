@@ -46,11 +46,10 @@ std::string infx2pstfx(std::string inf)
 			}
 			else if (k <= prior(stack1.get()))
 			{
-      while (!stack1.isEmpty())
 				expr.append(string(1, stack1.get()));
 				stack1.pop();
+				stack1.push(inf[i]);
 			}
-      stack1.push(inf[i]);
 		}
 		else
 			expr.append(string(1, inf[i]));
@@ -64,7 +63,6 @@ std::string infx2pstfx(std::string inf)
 
 	return expr;
 }
-
 
 int calc(int k1, int k2, char pst)
 {
