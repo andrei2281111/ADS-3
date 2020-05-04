@@ -95,7 +95,5 @@ int eval(string pst)
 		int res = calc(oper2, oper1, pst[i]);
 		stack2.push(res);
 	}
-
-}
-return stack2.get();
+		return stack2.get();
 }
