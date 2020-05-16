@@ -1,108 +1,103 @@
+#include <iostream>
 #include "tstack.h"
-#include <string>
-#include <utility>
+using namespace std;
 
-int un_num(const char& sim)
+int prior(char ch)
 {
-    std::pair<char, int> priority[6];
-    priority[0].first = '('; priority[0].second = 0;
-    priority[1].first = ')'; priority[1].second = 1;
-    priority[2].first = '+'; priority[2].second = 2;
-    priority[3].first = '-'; priority[3].second = 2;
-    priority[4].first = '*'; priority[4].second = 3;
-    priority[5].first = '/'; priority[5].second = 3;
-    int prior = -1;
-    for (int j = 0; j < 6; ++j)
-        if (sim == priority[j].first)
-        {
-            prior = priority[j].second;
-            break;
-        }
-    return prior;
-}
-// преобразование выражения в постфиксную форму
-std::string infx2pstfx(std::string inf)
-{
-    std::string work;
-    TStack<char> stack;
-    for (auto &sim : inf)
+    switch (ch)
     {
-        int prior = un_num(sim);
-        if (prior == -1)
-            work += sim;
+    case '(': return 0;
+    case ')': return 1;
+    case '+': return 2;
+    case '-': return 2;
+    case '*': return 3;
+    case '/': return 3;
+    default: return -1;
+    }
+}
+
+string infx2pstfx(string inf)
+{
+    TStack<char> stack1;
+    string tmp = "";
+    for (int i = 0; i < inf.size(); i++)
+    {
+        char ch = inf[i];
+        int k = prior(ch);
+
+        if (k == -1)
+            tmp.append(string(1, ch));
         else
-            if (stack.get() < prior || prior == 0 || stack.isEmpty())
-                stack.push(sim);
-            else if (sim == ')')
-            {
-                char sm = stack.get();
-                while (un_num(sm) >= prior)
-                {
-                    work += sm;
-                    stack.pop();
-                    sm = stack.get();
-                }
-                stack.pop();
-            }
+            if (stack1.isEmpty() || k == 0 || k > prior(stack1.get()))
+                stack1.push(ch);
             else
             {
-                char sm = stack.get();
-                while (un_num(sm) >= prior)
+                if (ch == ')')
+                    while (true)
+                    {
+                        char sym = stack1.get();
+                        stack1.pop();
+                        if (sym != '(')
+                            tmp.append(string(1, sym));
+                        else
+                            break;
+                    }
+                else
                 {
-                    work += sm;
-                    stack.pop();
-                    sm = stack.get();
+                    while (!stack1.isEmpty())
+                    {
+                        char lastStackEl = stack1.get();
+                        stack1.pop();
+                        if (prior(lastStackEl) >= k)
+                            tmp.append(string(1, lastStackEl));
+                    }
+                    stack1.push(ch);
                 }
-                stack.push(sim);
             }
-
     }
-    while (!stack.isEmpty())
+    while (!stack1.isEmpty())
     {
-        work += stack.get();
-        stack.pop();
+        char lastStackEl = stack1.get();
+        stack1.pop();
+        tmp.append(string(1, lastStackEl));
     }
-    return work;
+    return tmp;
 }
 
-int eval(std::string pst)
-int counter(const int& a, const int& b , const char& el)
+int excute_calc(int k1, int k2, char pst)
 {
-    switch (el)
+    switch (pst)
     {
-        default:
-        break;
-    case '+':return a + b;
-    case '-':return a - b;
-    case '*':return a * b;
-    case '/':return a / b;
+    case '+': return k1 + k2;
+    case '-': return k1 - k2;
+    case '*': return k1 * k2;
+    case '/': return k1 / k2;
+    default: return -1;
     }
 }
 
-} 
-// вычисление выражения, записанного в постфиксной форме
-int eval(std::string pst)
+int eval(string pst)
 {
-    int summ{ 0 };
-    TStack<int> stack;
-    for (auto& el : pst)
+    TStack<int> stack2;
+    for (int i = 0; i < pst.size(); i++)
     {
-        if (un_num(el) == -1)
-        {
-            char k[2];
-            k[0] = el;
-            k[1] = '\0';
-            int r = atoi(k);
-            stack.push(r);
-        }
+        char ch = pst[i];
+        int priority = prior(ch);
+
+        if (priority == -1)
+            stack2.push(ch - 48);
         else
         {
-            int b = stack.get();
-            stack.pop();
-            int a = stack.get();
-            stack.pop();
-            stack.push(counter(a, b, el));
+            int  k1 = stack2.get();
+            stack2.pop();
+
+            int k2 = stack2.get();
+            stack2.pop();
+
+            int res = excute_calc(k2, k1, ch);
+            stack2.push(res);
         }
+
     }
-    return stack.get();
+    return stack2.get();
 }
