@@ -1,107 +1,107 @@
+#include <iostream>
 #include "tstack.h"
-#include <string>
-#include <utility>
 
-int un_num(const char& sim)
+using namespace std;
+
+
+int prior(char input)
 {
-    std::pair<char, int> priority[6];
-    priority[0].first = '('; priority[0].second = 0;
-    priority[1].first = ')'; priority[1].second = 1;
-    priority[2].first = '+'; priority[2].second = 2;
-    priority[3].first = '-'; priority[3].second = 2;
-    priority[4].first = '*'; priority[4].second = 3;
-    priority[5].first = '/'; priority[5].second = 3;
-    int prior = -1;
-    for (int j = 0; j < 6; ++j)
-        if (sim == priority[j].first)
-        {
-            prior = priority[j].second;
-            break;
-        }
-    return prior;
+switch (input)
+{
+case '(': return 0;
+case ')': return 1;
+case '+': return 2;
+case '-': return 2;
+case '*': return 3;
+case '/': return 3;
+default: return -1;
+}
+}
+//преобрахование
+string infx2pstfx(string inf)
+{
+TStack<char> stack1;
+string tmp = "";
+for (int i = 0; i < inf.size(); i++)
+{
+char ch = inf[i];
+int k = prior(ch);
+
+if (k == -1)
+tmp.append(string(1, ch));
+else
+if (stack1.isEmpty() || k == 0 || k > prior(stack1.get()))
+stack1.push(ch);
+else
+{
+if (ch == ')')
+while (true)
+{
+char sym = stack1.get();
+stack1.pop();
+if (sym != '(')
+tmp.append(string(1, sym));
+else
+break;
+}
+else
+{
+while (!stack1.isEmpty())
+{
+char lastStackEl = stack1.get();
+stack1.pop();
+if (prior(lastStackEl) >= k)
+tmp.append(string(1, lastStackEl));
+}
+stack1.push(ch);
+}
+}
+}
+while (!stack1.isEmpty())
+{
+char lastStackEl = stack1.get();
+stack1.pop();
+tmp.append(string(1, lastStackEl));
+}
+return tmp;
 }
 
-std::string infx2pstfx(std::string inf)
+int excute_calc(int k1, int k2, char pst)
 {
-    std::string work;
-    TStack<char> stack;
-    for (auto &sim : inf)
-    {
-        int prior = un_num(sim);
-        if (prior == -1)
-            work += sim;
-        else
-            if (stack.get() < prior || prior == 0 || stack.isEmpty())
-                stack.push(sim);
-            else if (sim == ')')
-            {
-                char sm = stack.get();
-                while (un_num(sm) >= prior)
-                {
-                    work += sm;
-                    stack.pop();
-                    sm = stack.get();
-                }
-                stack.pop();
-            }
-            else
-            {
-                char sm = stack.get();
-                while (un_num(sm) >= prior)
-                {
-                    work += sm;
-                    stack.pop();
-                    sm = stack.get();
-                }
-                stack.push(sim);
-            }
+switch (pst)
+{
+case '+': return k1 + k2;
+case '-': return k1 - k2;
+case '*': return k1 * k2;
+case '/': return k1 / k2;
+default: return -1;
+}
+}
+//высчитывание
 
-    }
-    while (!stack.isEmpty())
-    {
-        work += stack.get();
-        stack.pop();
-    }
-    return work;
+int eval(string pst)
+{
+TStack<int> stack2;
+for (int i = 0; i < pst.size(); i++)
+{
+char ch = pst[i];
+int priority = prior(ch);
+
+if (priority == -1)
+stack2.push(ch - 48);
+else
+{
+int k1 = stack2.get();
+stack2.pop();
+
+int k2 = stack2.get();
+stack2.pop();
+
+
+int res = excute_calc(k2, k1, ch);
+stack2.push(res);
 }
 
-int eval(std::string pst)
-int counter(const int& a, const int& b , const char& el)
-{
-    switch (el)
-    {
-        default:
-        break;
-    case '+':return a + b;
-    case '-':return a - b;
-    case '*':return a * b;
-    case '/':return a / b;
-    }
 }
-
-} 
-int eval(std::string pst)
-{
-    int summ{ 0 };
-    TStack<int> stack;
-    for (auto& el : pst)
-    {
-        if (un_num(el) == -1)
-        {
-            char k[2];
-            k[0] = el;
-            k[1] = '\0';
-            int r = atoi(k);
-            stack.push(r);
-        }
-        else
-        {
-            int b = stack.get();
-            stack.pop();
-            int a = stack.get();
-            stack.pop();
-            stack.push(counter(a, b, el));
-        }
-    }
-    return stack.get();
+return stack2.get();
 }
