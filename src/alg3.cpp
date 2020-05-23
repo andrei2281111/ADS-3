@@ -1,3 +1,5 @@
+@@ -1,12 +1,103 @@
+
 #include "tstack.h"
 #include <iostream>
 using namespace std;
