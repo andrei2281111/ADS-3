@@ -1,7 +1,9 @@
 #include <iostream>
 #include "tstack.h"
+#include <string>
 using namespace std;
 
+std::string infx2pstfx(std::string inf)
 int prior(char ch)
 {
     switch (ch)
@@ -23,12 +25,12 @@ string infx2pstfx(string inf)
     for (int i = 0; i < inf.size(); i++)
     {
         char ch = inf[i];
-        int k = prior(ch);
+        int s = prior(ch);
 
-        if (k == -1)
+        if (s == -1)
             tmp.append(string(1, ch));
         else
-            if (stack1.isEmpty() || k == 0 || k > prior(stack1.get()))
+            if (stack1.isEmpty() || s == 0 || s > prior(stack1.get()))
                 stack1.push(ch);
             else
             {
@@ -48,7 +50,7 @@ string infx2pstfx(string inf)
                     {
                         char lastStackEl = stack1.get();
                         stack1.pop();
-                        if (prior(lastStackEl) >= k)
+                        if (prior(lastStackEl) >= s)
                             tmp.append(string(1, lastStackEl));
                     }
                     stack1.push(ch);
@@ -64,18 +66,19 @@ string infx2pstfx(string inf)
     return tmp;
 }
 
-int excute_calc(int k1, int k2, char pst)
+int excute_calc(int s1, int s2, char pst)
 {
     switch (pst)
     {
-    case '+': return k1 + k2;
-    case '-': return k1 - k2;
-    case '*': return k1 * k2;
-    case '/': return k1 / k2;
+    case '+': return s1 + s2;
+    case '-': return s1 - s2;
+    case '*': return s1 * s2;
+    case '/': return s1 / s2;
     default: return -1;
     }
 }
 
+int eval(std::string pst)
 int eval(string pst)
 {
     TStack<int> stack2;
@@ -88,16 +91,17 @@ int eval(string pst)
             stack2.push(ch - 48);
         else
         {
-            int  k1 = stack2.get();
+            int  s1 = stack2.get();
             stack2.pop();
 
-            int k2 = stack2.get();
+            int s2 = stack2.get();
             stack2.pop();
 
-            int res = excute_calc(k2, k1, ch);
-            stack2.push(res);
         }
-
+        int res = excute_calc(s2, s1, ch);
+        stack2.push(res);
     }
-    return stack2.get();
+
+}
+return stack2.get();
 }
