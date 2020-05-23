@@ -76,7 +76,7 @@ int calculate(int num1, int num2, char operation)
     }
 }
 
-int eval(string pst)
+int eval(std::string pst)
 {
     TStack<int> stack;
     for (int i = 0; i < pst.size(); i++)
@@ -93,7 +93,6 @@ int eval(string pst)
 
             int num2 = stack.get();
             stack.pop();
-
             int result = calculate(num2, num1, ch);
             stack.push(result);
         }
